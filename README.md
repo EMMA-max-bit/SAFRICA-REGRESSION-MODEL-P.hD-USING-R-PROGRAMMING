@@ -1,7 +1,7 @@
 # SAFRICA-REGRESSION-MODEL-P.hD-USING-R-PROGRAMMING
 This exercise employs a sample from a 1994 survey of South African workers. The data are contained in a ﬁle called safrica.dta
 
-## INTERPRETATION TO QUESTION 2
+## INTERPRETATION OF FINDINGS TO QUESTION 2
 ## A. plausibility of Regression Assumptions
 1. Variation in X: There is adequate variation in the independent variable-that is, the percent
 of years for leftist government control, or percleft-across the 12 countries. This ensures
