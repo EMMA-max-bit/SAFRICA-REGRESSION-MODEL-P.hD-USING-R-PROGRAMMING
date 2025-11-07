@@ -1,49 +1,77 @@
-# History files
-.Rhistory
-.Rapp.history
+# Set working directory
+setwd("C:/Users/Emma Tergunwa/Desktop/EMADA")
+getwd()
 
-# Session Data files
-.RData
-.RDataTmp
+# Load necessary libraries
+library(readr)
+library(ggplot2)
+library(haven)
+library(haven)
+library(broom)
+library(devtools)
+library(modelsummary)
+library(cli)
+library(texreg)
+library(tinytex)
 
-# User-specific files
-.Ruserdata
+# Load the data
+safrica <- read_dta("C:/Users/Emma Tergunwa/Desktop/ESTHER/ASSIGNMENT2/safrica.dta")
+head(safrica)
 
-# Example code in package build process
-*-Ex.R
+#dimension of data
+dim(safrica)
 
-# Output files from R CMD build
-/*.tar.gz
+# data structure
+str(safrica)
 
-# Output files from R CMD check
-/*.Rcheck/
+# summary statistics of safrica
+summary(safrica)
 
-# RStudio files
-.Rproj.user/
+# a. Run regression
+model1 <- lm(wage ~ female, data = safrica)
+summary(model1)
 
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+# b.Regression of wage on female and education
+model2 <- lm(wage ~ female + educ, data = safrica)
+summary(model2)
 
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
-.httr-oauth
+# c.Regression of wage on gender, education, age, union, marital status, and urban residence
+model3 <- lm(wage ~ female + educ + age + union + married + urban, data = safrica)
+summary(model3)
 
-# knitr and R markdown default cache directories
-*_cache/
-/cache/
+# d.regression
+model4 <- lm(formula = wage ~ age, data = safrica)
+summary(model4)
 
-# Temporary files created by R markdown
-*.utf8.md
-*.knit.md
+# check correlation
+cor(safrica$age, safrica$exper, use = "complete.obs")
 
-# R Environment Variables
-.Renviron
+# e. Regression of wage on age and experience
+model5 <- lm(formula = wage ~ age + exper, data = safrica)
+summary(model5)
 
-# pkgdown site
-docs/
+# Combine all model summaries
+model_results <- list(
+  model1 = tidy(model1),
+  model2 = tidy(model2),
+  model3 = tidy(model3),
+  model4 = tidy(model4),
+  model5 = tidy(model5)
+)
 
-# translation temp files
-po/*~
+# Print each model neatly
+model_results
 
-# RStudio Connect folder
-rsconnect/
+# summary of all models
+modelsummary(
+  list(
+    "Model1: wage ~ female" = model1,
+    "Model2: + educ" = model2,
+    "Model3: + age + union + married + urban" = model3,
+    "Model4: wage ~ age" = model4,
+    "Model5: wage ~ age + exper" = model5
+  ),
+  statistic = "p.value",
+  title = "Wage Regression Models",
+  stars = TRUE
+)
