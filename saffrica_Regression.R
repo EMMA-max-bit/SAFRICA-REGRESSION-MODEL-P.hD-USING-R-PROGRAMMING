@@ -1,0 +1,83 @@
+# Set working directory
+setwd("C:/Users/Emma Tergunwa/Desktop/EMADA")
+getwd()
+
+# Load necessary libraries
+library(readr)
+library(ggplot2)
+library(haven)
+library(haven)
+library(broom)
+library(devtools)
+library(modelsummary)
+library(cli)
+library(texreg)
+library(tinytex)
+
+# Load the data
+safrica <- read_dta("C:/Users/Emma Tergunwa/Desktop/ESTHER/ASSIGNMENT2/safrica.dta")
+head(safrica)
+
+#dimension of data
+dim(safrica)
+
+# data structure
+str(safrica)
+
+# summary statistics of safrica
+summary(safrica)
+
+# a. Run regression
+model1 <- lm(wage ~ female, data = safrica)
+summary(model1)
+
+# b.regression
+model2 <- lm(wage ~ female + educ, data = safrica)
+summary(model2)
+
+# c. regression
+model3 <- lm(wage ~ female + educ + age + union + married + urban, data = safrica)
+summary(model3)
+
+# d.regression
+model4 <- lm(formula = wage ~ age, data = safrica)
+
+# e. regression
+model5 <- lm(formula = wage ~ age + exper, data = safrica)
+
+
+# Combine all model summaries
+model_results <- list(
+  model1 = tidy(model1),
+  model2 = tidy(model2),
+  model3 = tidy(model3),
+  model4 = tidy(model4),
+  model5 = tidy(model5)
+)
+
+# Print each model neatly
+model_results
+
+# summary of all models
+modelsummary(
+  list(
+    "Model1: wage ~ female" = model1,
+    "Model2: + educ" = model2,
+    "Model3: + age + union + married + urban" = model3,
+    "Model4: wage ~ age" = model4,
+    "Model5: wage ~ age + exper" = model5
+  ),
+  statistic = "p.value",
+  title = "Wage Regression Models",
+  stars = TRUE
+)
+
+
+
+
+
+
+
+
+
+
